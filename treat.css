@@ -1,0 +1,222 @@
+body {
+
+/* Modal background overlay */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000; /* On top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Scroll if needed */
+  background-color: rgba(0,0,0,0.7); /* Black with opacity */
+}
+
+
+
+#modalTitle {
+  font-size: 2.2em; /* bigger heading */
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+/* Make modal body text bigger and more readable */
+#modalBody {
+  font-size: 1.5em; /* bigger paragraph text */
+  line-height: 1.5;
+}
+
+
+
+
+
+/* Modal content box */
+.modal-content {
+  background-color: #17141d;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 70%;
+  color: white;
+  position: relative;
+  box-shadow: 0 0 20px rgb(0 154 217 / 0.7);
+}
+
+/* Close button (X) */
+.modal-close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 50px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: #00a0ff;
+}
+
+
+    background-color: #100e17;
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    flex-direction: column; /* Stack rows vertically */
+    justify-content: center; /* Center the entire card block vertically */
+    align-items: center; /* Center the entire card block horizontally */
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px 0;
+    overflow-x: hidden;
+    position: relative; /* For canvas z-index context */
+    z-index: 1; /* Ensure body content is above canvas */
+}
+
+/* Styles for the particle canvas */
+#particleCanvas {
+    position: fixed; /* Fixed to viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Place it behind all other content */
+    background-color: #100e17; /* Fallback */
+}
+
+/* This new class contains each row of 4 cards */
+.cards-row {
+    display: flex; /* Use flexbox for horizontal alignment */
+    /* justify-content: center; */ /* Remove justify-content for overlapping effect */
+    align-items: flex-start; /* Align cards to the top of the row */
+    flex-wrap: nowrap; /* Keep cards on one line for the overlapping effect */
+    /* width: 1200px; */ /* Let the cards dictate the width, or manage with overflow */
+    max-width: 95%; /* Make it slightly responsive if needed */
+    /* gap: 40px; */ /* REMOVE gap as we'll use negative margins for overlap */
+    position: relative; /* Needed for z-index and hover shifts */
+    z-index: 2; /* Ensure rows are on top of canvas */
+    padding-bottom: 20px; /* Space for the hover effect if card moves down */
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 660px;
+    width: 500px; /* Restore original card width for overlapping */
+    background-color: #17141d;
+    border-radius: 10px;
+    box-shadow: -1rem 0 3rem #000;
+    transition: 0.4s ease-out; /* Smooth transition for hover effects */
+    position: relative; /* Crucial for z-index and shifting */
+    left: 0px; /* Initial position for hover shift */
+    z-index: 2; /* Ensure cards are above other card parts */
+}
+
+/* Re-introduce the negative margin for overlapping */
+.card:not(:first-child) {
+    margin-left: -50px; /* Adjust this value to control overlap amount */
+}
+
+/* Hover effect: lift and move the current card */
+.card:hover {
+    transform: translateY(-20px); /* Lift effect */
+    transition: 0.4s ease-out;
+    z-index: 3; /* Bring hovered card to front */
+}
+
+/* Hover effect: shift subsequent cards to the right */
+.card:hover ~ .card {
+    position: relative;
+    left: 50px; /* Move them to the right to reveal the hovered card */
+    transition: 0.4s ease-out;
+}
+
+/* Adjustments for title, bar, and h6 within card (from previous fixes) */
+.title {
+    color: white;
+    font-weight: 300;
+    position: absolute;
+    left: 20px;
+    top: 15px;
+    z-index: 2;
+}
+
+.bar {
+    position: absolute;
+    top: 100px;
+    left: 20px;
+    height: auto;
+    width: calc(100% - 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+    z-index: 1;
+}
+
+.emptybar {
+    background-color: #2e3033;
+    width: 150px;
+    height: 5px;
+    margin-bottom: 5px;
+}
+
+.filledbar {
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    z-index: 3;
+    width: 0px;
+    height: 5px;
+    background: rgb(0,154,217);
+    background: linear-gradient(90deg, rgba(0,154,217,1) 0%, rgba(217,147,0,1) 65%, rgba(255,186,0,1) 100%);
+    transition: 0.6s ease-out;
+}
+
+.bar h6 {
+    position: static;
+    margin: 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+    width: 100%;
+}
+
+.card:hover .filledbar {
+    width: 120px;
+    transition: 0.4s ease-out;
+}
+
+.circle { /* If you're not using SVG circles in HTML, this might be leftover */
+    position: absolute;
+    top: 150px;
+    left: calc(50% - 60px);
+}
+
+.stroke {
+    stroke: rgb(255, 255, 255);
+    stroke-dasharray: 360;
+    stroke-dashoffset: 360;
+    transition: 0.6s ease-out;
+}
+
+svg { /* Ensure SVG is present in HTML if you want circle/stroke effects */
+    fill: #17141d;
+    stroke-width: 2px;
+}
+
+.card:hover .stroke {
+    stroke-dashoffset: 100;
+    transition: 0.6s ease-out;
+}
+
+.bar h3,
+.bar h3 a {
+    word-wrap: break-word;        /* Ensures long words wrap */
+    overflow-wrap: break-word;    /* Modern version */
+    white-space: normal;          /* Prevent no-wrap overrides */
+    line-height: 1.5;             /* Improves readability */
+    display: block;               /* Ensures proper block rendering */
+}
